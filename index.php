@@ -1,6 +1,6 @@
 <?php
 	include("../conf/conn.php");
-
+	$openid = $_GET['openid'];
 	$user=$_SESSION['user'];
 	if(!empty($user)){
 ?>
@@ -122,7 +122,7 @@
 	}else{
 		$address = $_SERVER['REQUEST_URI'];
 	//	$address = urlencode($address);
-		$url = "/bbs/login.php?dir=".$address; 
+		$url = "/bbs/login.php?openid=$openid&dir=".$address; 
 		Header("Location:$url");
 	}
 ?>
