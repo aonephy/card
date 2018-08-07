@@ -16,7 +16,7 @@
 		);
 	}else{
 		$creditCardId = md5(time());
-		mysql_query("insert into $table (bank,groupId,iconUrl,cardNum,accountDate,repaymentDate,creditCardId,ip,datetime) values ('$_POST[bank]','$groupId','images/$_POST[bank].png','$_POST[cardNum]','$_POST[accountDate]','$_POST[repaymentDate]','$creditCardId','$ip',now())") or die(mysql_error());
+		mysql_query("insert into $table (bank,groupId,iconUrl,cardNum,accountDate,repaymentDate,minConsumptionTime,creditCardId,ip,datetime) values ('$_POST[bank]','$groupId','images/$_POST[bank].png','$_POST[cardNum]','$_POST[accountDate]','$_POST[repaymentDate]','$_POST[minConsumptionTime]','$creditCardId','$ip',now())") or die(mysql_error());
 		$out = array(
 			'code'=>'10000',
 			'msg'=>"add new card success!"

@@ -4,7 +4,8 @@
 	include("../../conf/conn.php");
 	$user=$_SESSION['user'];
 	$table = 'creditCardConsumption';
-	$qry = mysql_query("select * from $table where creditCardId='$_GET[id]' and delstatus='1'");
+	$month = date('m');
+	$qry = mysql_query("select * from $table where creditCardId='$_GET[id]' and month(datetime) in ('$month') and delstatus='1' order by datetime asc");
 	
 		
 	while($rs = mysql_fetch_assoc($qry)){
@@ -15,7 +16,8 @@
 	if(empty($data)){
 		$out = array(
 			'code'=>'10001',
-			'msg'=>'Id error!'
+			'msg'=>'Id error!',
+			'month'=>$month
 		);
 	}else{
 		$out = array(

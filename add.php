@@ -70,6 +70,10 @@
 						<option v-for="rs,index in date" :value='index+1'>{{index+1}}</option>
 					</select>
 				</div>
+				<div class="form-group">
+					<label for="minConsumptionTime">免年费消费次数</label>
+					<input type="text" class="form-control" id="minConsumptionTime" name="minConsumptionTime" v-model="minConsumptionTime">						
+				</div>
 			
 				<button class="btn btn-default btn-block">提交</button>
 			</form>
@@ -86,6 +90,7 @@
 						cardNum:null,
 						accountDate:1,
 						repaymentDate:1,
+						minConsumptionTime:6,
 						date:[1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1],
 					},
 					methods: {
@@ -101,13 +106,13 @@
 							});
 						},
 						addCard(){
-							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate};
+							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime};
 							
 							let param = this.FormatData(data); 
 							
 						//	console.log(data);0
 							axios({
-								url:'api/newcard.php',
+								url:'api/newCard.php',
 								method: 'POST',
 								data:param,
 								responseType: 'json',

@@ -25,6 +25,8 @@
 			.glyphicon{color:#24b6fe}
 			hr{margin:10px auto}
 			.panel .media-object{width:45px;border-radius:50px}
+			.disabled .glyphicon{color:#ccc}
+			.btn-sm{margin:10px 20px 0px 0px}
 			@media (min-width: 768px){
 				.navbar-header{width:100%}
 			}
@@ -47,7 +49,7 @@
 						<h4>信用卡详情</h4>
 						<div class="navbar-right">
 							<a href="edit.php?id=<?=$id?>" class="navbar-brand">
-							  <span class="glyphicon glyphicon-credit-card"></span>
+							  <span class="glyphicon glyphicon-edit"></span>
 							</a>
 						</div>
 					</div>
@@ -70,26 +72,38 @@
 				</div>
 				
 				<div class="panel-body">
-						<div style=''>出账日：每月<span style="color:red"> {{cardContent.accountDate}} </span>日</div>
+						<div style='float:left;margin-bottom:20px'>出账日：每月<span style="color:red"> {{cardContent.accountDate}} </span>日</div>
 							
-						<div style=''>还款日：每月<span style="color:red"> {{cardContent.repaymentDate}} </span>日</div>
+						<div style='float:right'>还款日：每月<span style="color:red"> {{cardContent.repaymentDate}} </span>日</div>
 						<hr style="clear:both">
-							<div>免年费消费次数：<span style="color:blue"> {{cardContent.minConsumptionTime}} </span> 次</div>
+						<div style='float:left'>免年费消费次数：<span style="color:blue"> {{cardContent.minConsumptionTime}} </span> 次</div>
 							
+						<div style='float:right;font-size:1.3em' @click="addItem" v-bind:class="{disabled:!addIndex}">
+							<span class="glyphicon glyphicon-credit-card"></span>
+							
+						</div>
 				
 				</div>
 			</div>
 			
 			
-			<div  class="panel panel-info" v-for="rs in consumptionList">
+			<div class="panel panel-info" v-for="rs in consumptionList">
 				<div class="panel-heading">
-					<h3 class="panel-title">{{rs.datetime}}</h3>
+					<h3 class="panel-title" v-if="rs.datetime">{{rs.datetime}}</h3>
+					<h3 class="panel-title" v-else>日期 ：<input type='date' class="form-control" v-model='datetime'></h3>
 				</div>
 				<div class="panel-body">
-					<div>消费 ：{{rs.amount}}</div>
+					<div v-if="rs.amount">消费 ：{{rs.amount}}</div>
+					<div v-else>消费 ：<input type='int' class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" v-model="amount"></div>
 				</div>
 				<div class="panel-footer">
-					<div>备注 ：{{rs.remark}}</div>
+					<div v-if="rs.amount">备注 ：{{rs.remark}}</div>
+					<div v-else>
+						备注 ：<input type='text' class="form-control" v-model="remark">
+						<div style=''>
+							<button class='btn-info btn btn-sm' @click='saveNewItem'>保存</button> <button class='btn btn-default btn-sm' @click='removeItem'>取消</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			
@@ -99,8 +113,12 @@
 			var vm = new Vue({
 					el: '#p-body',
 					data: {
-						cardContent:null,
-						consumptionList:[1,2,3]
+						cardContent:{iconUrl:'images/default.png'},
+						consumptionList:[],
+						addIndex:true,
+						amount:null,
+						datetime:null,					
+						remark:null
 					},
 					methods: {
 						getCardContent(){
@@ -122,10 +140,53 @@
 								params:{id:'<?=$id?>'},
 								responseType: 'json',
 								transformResponse: [function(res){
-									console.log(res.data)								
-									vm.consumptionList = res.data;
+									console.log(res.data);
+									if(res.code==10000){
+										vm.consumptionList = res.data;
+									}
 								}]
 							})
+						},
+						addItem(){
+							if(this.addIndex){
+								this.consumptionList.unshift({datetime:null,amount:null})
+								this.addIndex = false;
+							}
+						},
+						removeItem(){
+							this.consumptionList.shift({datetime:null,amount:null});
+							this.addIndex = true;
+						},
+						saveNewItem(){
+							let data = {creditCardId:"<?=$id?>",amount:this.amount,datetime:this.datetime,remark:this.remark};
+							
+							let params = this.FormatData(data); 
+						//	console.log(data);
+							
+							axios({
+								url:'api/newConsumption.php',
+								method: 'POST',
+								data:params,
+								responseType: 'json',
+								transformResponse: [function(res){
+									console.log(res);
+								
+									if(res.code==10000){
+										vm.addIndex = true;
+										vm.getConsumptionList();										
+									}
+							
+								}]
+								
+							})
+							
+						},
+						FormatData(data){
+							let paramters = new FormData(); 
+							for(var key in data){
+								paramters.append(key,data[key])
+							}
+							return paramters;
 						}
 					},
 					mounted: function(){
