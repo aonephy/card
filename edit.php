@@ -51,7 +51,7 @@
 				<div class="form-group">
 					<label for="bank">银行名称</label>
 					<select class="form-control" id="bank" name="bank" v-model="bank">
-						<option v-for="rs in bankList" :value='rs.bankId'>{{rs.bankName}}</option>
+						<option v-for="rs in bankList" :value='rs.bankId' >{{rs.bankName}}</option>
 					</select>
 				</div>
 				<div class="form-group">

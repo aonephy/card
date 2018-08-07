@@ -1,6 +1,6 @@
 <?php
 	include("../conf/conn.php");
-	$openid = $_GET['openid'];
+	@$openid = $_GET['openid'];
 	$user=$_SESSION['user'];
 	if(!empty($user)){
 ?>
