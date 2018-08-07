@@ -133,7 +133,7 @@
 								params:{id:'<?=$id?>'},
 								responseType: 'json',
 								transformResponse: [function(res){
-									console.log(res.data)								
+							//		console.log(res.data)								
 									vm.cardContent = res.data;
 								}]
 							})
@@ -145,9 +145,10 @@
 								params:{id:'<?=$id?>'},
 								responseType: 'json',
 								transformResponse: [function(res){
-									console.log(res.data);
+							//		console.log(res.data);
 									if(res.code==10000){
 										vm.consumptionList = res.data;
+										vm.dataSaveing = false;
 									}
 								}]
 							})
@@ -159,7 +160,7 @@
 								this.remark = '';
 								this.consumptionList.unshift({date:'',amount:'',remark:''})
 								this.addIndex = false;
-								console.log(this.consumptionList)
+							//	console.log(this.consumptionList)
 							}
 						},
 						removeItem(){
@@ -167,29 +168,33 @@
 							this.addIndex = true;
 						},
 						saveNewItem(){
-							let data = {creditCardId:"<?=$id?>",amount:this.amount,date:this.date,remark:this.remark};
-							
-							let params = this.FormatData(data); 
-							console.log(data);
-							if(this.date==''||this.amount==''){
-								alert("日期及消费金额不能为空！");
-							}else{
-								axios({
-									url:'api/newConsumption.php',
-									method: 'POST',
-									data:params,
-									responseType: 'json',
-									transformResponse: [function(res){
-										console.log(res);
-									
-										if(res.code==10000){
-											vm.addIndex = true;
-											vm.getConsumptionList();										
-										}
+							if(!vm.dataSaveing){
+											
+								vm.dataSaveing = true;
 								
-									}]
+								let data = {creditCardId:"<?=$id?>",amount:this.amount,date:this.date,remark:this.remark};
+								
+								let params = this.FormatData(data); 
+								console.log(data);
+								if(this.date==''||this.amount==''){
+									alert("日期及消费金额不能为空！");
+								}else{
+									axios({
+										url:'api/newConsumption.php',
+										method: 'POST',
+										data:params,
+										responseType: 'json',
+										transformResponse: [function(res){
+											
+											if(res.code==10000){
+												vm.addIndex = true;
+												vm.getConsumptionList();
+											}
 									
-								})
+										}]
+										
+									})
+								}
 							}
 						},
 						FormatData(data){
@@ -200,26 +205,26 @@
 							return paramters;
 						},
 						formCheck(){
-							console.log('form validation!')
-							$(".content").validate({
-								rules : {
-									amount : {
-										required : true,
-										number : true,
-										digits : true,
+							//	console.log('form validation!')
+								
+								$(".content").validate({
+									rules : {
+										amount : {
+											required : true,
+											number : true,
+											digits : true,
+										},
+										date : {
+											required : true,
+											date : true,
+										}
 									},
-									date : {
-										required : true,
-										date : true,
-									}
-								},
-								submitHandler: function(form){
-									if(!this.dataSaveing){
-										this.dataSaveing = true;
+									submitHandler: function(form){
 										vm.saveNewItem();
+										
 									}
-								}
-							});
+								});
+							
 						}
 					},
 					mounted: function(){
