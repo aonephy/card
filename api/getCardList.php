@@ -8,9 +8,10 @@
 	$day = date("d");
 	$dayOffset = 6;
 	
-	$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1'");
+	$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.repaymentDate");
+	
 	if(@$_GET['method']=='lately'){
-		$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) and $table.repaymentDate>=$day");
+		$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) and $table.repaymentDate>=$day order by $table.repaymentDate");
 	}
 	
 	while($rs = mysql_fetch_assoc($qry)){

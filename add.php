@@ -92,6 +92,7 @@
 						repaymentDate:1,
 						minConsumptionTime:6,
 						date:[1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1],
+						dataSaveing:false
 					},
 					methods: {
 						loadBankList(){
@@ -139,10 +140,18 @@
 										digits : true,
 										maxlength:4,
 										minlength:4
+									},
+									minConsumptionTime : {
+										required : true,
+										number : true,
+										digits : true
 									}
 								},
 								submitHandler: function(form){
-									vm.addCard();
+									if(!this.dataSaveing){
+										this.dataSaveing = true;
+										vm.addCard();
+									}
 								}
 							});
 						}

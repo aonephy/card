@@ -13,7 +13,7 @@
 			'msg'=>'creditCardId error!'
 		);
 	}else{
-		mysql_query("insert into $table (creditCardId,amount,remark,ip,datetime) values ('$_POST[creditCardId]','$_POST[amount]','$_POST[remark]','$ip','$_POST[datetime]')") or die(mysql_error());
+		mysql_query("insert into $table (creditCardId,amount,remark,ip,date) values ('$_POST[creditCardId]','$_POST[amount]','$_POST[remark]','$ip','$_POST[date]')") or die(mysql_error());
 		$out = array(
 			'code'=>'10000',
 			'msg'=>"add new consumption success!"

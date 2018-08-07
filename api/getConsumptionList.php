@@ -5,7 +5,7 @@
 	$user=$_SESSION['user'];
 	$table = 'creditCardConsumption';
 	$month = date('m');
-	$qry = mysql_query("select * from $table where creditCardId='$_GET[id]' and month(datetime) in ('$month') and delstatus='1' order by datetime asc");
+	$qry = mysql_query("select * from $table where creditCardId='$_GET[id]' and month(date) in ('$month') and delstatus='1' order by date asc");
 	
 		
 	while($rs = mysql_fetch_assoc($qry)){

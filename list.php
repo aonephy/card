@@ -34,6 +34,9 @@
 		<script src="/js/vue.min.js"></script>
 		<script src="/js/axios.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
+		
+		<script src="/jquery/jquery.validate.min.js"></script>
+		<script src="/jquery/messages_cn.js"></script>
 	<body>
 		
 		<div id='p-body'>
@@ -87,25 +90,26 @@
 			</div>
 			
 			
-			<div class="panel panel-info" v-for="rs in consumptionList">
+			<form class="content panel panel-info" onsubmit="return false"  v-for="rs in consumptionList">
 				<div class="panel-heading">
-					<h3 class="panel-title" v-if="rs.datetime">{{rs.datetime}}</h3>
-					<h3 class="panel-title" v-else>日期 ：<input type='date' class="form-control" v-model='datetime'></h3>
+					<h3 class="panel-title" v-if="rs.date">{{rs.date}}</h3>
+					<h3 class="panel-title" v-else>日期 ：<input type='date' class="form-control" name='date' v-model='date'></h3>
 				</div>
 				<div class="panel-body">
 					<div v-if="rs.amount">消费 ：{{rs.amount}}</div>
-					<div v-else>消费 ：<input type='int' class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" v-model="amount"></div>
+					<div v-else>消费 ：<input type='int' class="form-control" name='amount' onkeyup="value=value.replace(/[^\d]/g,'')" v-model="amount"></div>
 				</div>
 				<div class="panel-footer">
 					<div v-if="rs.amount">备注 ：{{rs.remark}}</div>
 					<div v-else>
 						备注 ：<input type='text' class="form-control" v-model="remark">
 						<div style=''>
-							<button class='btn-info btn btn-sm' @click='saveNewItem'>保存</button> <button class='btn btn-default btn-sm' @click='removeItem'>取消</button>
+							<input type='submit' name='submit' class='btn-info btn btn-sm' @click='formCheck'> <button class='btn btn-default btn-sm' @click='removeItem'>取消</button>
 						</div>
 					</div>
 				</div>
-			</div>
+			</from>
+			
 			
 		</div>
 		
@@ -116,9 +120,10 @@
 						cardContent:{iconUrl:'images/default.png'},
 						consumptionList:[],
 						addIndex:true,
-						amount:null,
-						datetime:null,					
-						remark:null
+						amount:'',
+						date:'',					
+						remark:'',
+						dataSaveing:false
 					},
 					methods: {
 						getCardContent(){
@@ -149,8 +154,12 @@
 						},
 						addItem(){
 							if(this.addIndex){
-								this.consumptionList.unshift({datetime:null,amount:null})
+								this.date = '';
+								this.amount = '';
+								this.remark = '';
+								this.consumptionList.unshift({date:'',amount:'',remark:''})
 								this.addIndex = false;
+								console.log(this.consumptionList)
 							}
 						},
 						removeItem(){
@@ -158,28 +167,30 @@
 							this.addIndex = true;
 						},
 						saveNewItem(){
-							let data = {creditCardId:"<?=$id?>",amount:this.amount,datetime:this.datetime,remark:this.remark};
+							let data = {creditCardId:"<?=$id?>",amount:this.amount,date:this.date,remark:this.remark};
 							
 							let params = this.FormatData(data); 
-						//	console.log(data);
-							
-							axios({
-								url:'api/newConsumption.php',
-								method: 'POST',
-								data:params,
-								responseType: 'json',
-								transformResponse: [function(res){
-									console.log(res);
+							console.log(data);
+							if(this.date==''||this.amount==''){
+								alert("日期及消费金额不能为空！");
+							}else{
+								axios({
+									url:'api/newConsumption.php',
+									method: 'POST',
+									data:params,
+									responseType: 'json',
+									transformResponse: [function(res){
+										console.log(res);
+									
+										if(res.code==10000){
+											vm.addIndex = true;
+											vm.getConsumptionList();										
+										}
 								
-									if(res.code==10000){
-										vm.addIndex = true;
-										vm.getConsumptionList();										
-									}
-							
-								}]
-								
-							})
-							
+									}]
+									
+								})
+							}
 						},
 						FormatData(data){
 							let paramters = new FormData(); 
@@ -187,6 +198,28 @@
 								paramters.append(key,data[key])
 							}
 							return paramters;
+						},
+						formCheck(){
+							console.log('form validation!')
+							$(".content").validate({
+								rules : {
+									amount : {
+										required : true,
+										number : true,
+										digits : true,
+									},
+									date : {
+										required : true,
+										date : true,
+									}
+								},
+								submitHandler: function(form){
+									if(!this.dataSaveing){
+										this.dataSaveing = true;
+										vm.saveNewItem();
+									}
+								}
+							});
 						}
 					},
 					mounted: function(){

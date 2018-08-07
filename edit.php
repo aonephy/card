@@ -46,7 +46,7 @@
 					
 				</div>
 			</nav>
-			<form id="content" onsubmit="return false">
+			<form id="content" onsubmit="return false" class='form'>
 			
 				<div class="form-group">
 					<label for="bank">银行名称</label>
@@ -149,7 +149,7 @@
 							return paramters;
 						},
 						formCheck(){
-							$("#content").validate({
+							$(".form").validate({
 								rules : {
 									cardNum : {
 										required : true,
@@ -157,6 +157,11 @@
 										digits : true,
 										maxlength:4,
 										minlength:4
+									},
+									minConsumptionTime : {
+										required : true,
+										number : true,
+										digits : true
 									}
 								},
 								submitHandler: function(form){
