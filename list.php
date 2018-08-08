@@ -62,24 +62,26 @@
 			<div class="panel panel-success" >
 				
 				<div class="panel-heading">
-					<div class="media">
+					<div class="media" style="position:relative">
 						<a class="media-left" >
-							<img class="media-object" :src="cardContent.iconUrl"
-								 alt="媒体对象">
+							<img class="media-object" :src="cardContent.iconUrl" alt="媒体对象">
 						</a>
 						<div class="media-body">
 							<h4 class="media-heading">{{cardContent.bankName}}</h4>
 							**** **** **** {{cardContent.cardNum}}
+							
 						</div>
+						
 					</div>
 				</div>
 				
 				<div class="panel-body">
-						<div style='float:left;margin-bottom:20px'>出账日：每月<span style="color:red"> {{cardContent.accountDate}} </span>日</div>
-							
-						<div style='float:right'>还款日：每月<span style="color:red"> {{cardContent.repaymentDate}} </span>日</div>
+						<div style='float:left;margin-bottom:20px'>出账日 ：每月<span style="color:red"> {{cardContent.accountDate}} </span>日</div>
+						
+						<div style='float:right'>还款日 ：每月<span style="color:red"> {{cardContent.repaymentDate}} </span>日</div>
+						<div style="clear:both">持卡人 ： <span style='    padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{cardContent.username}}</span></div>
 						<hr style="clear:both">
-						<div style='float:left'>免年费消费次数：<span style="color:blue"> {{cardContent.minConsumptionTime}} </span> 次</div>
+						<div style='float:left'>免年费消费次数 ：<span style="color:blue"> {{cardContent.minConsumptionTime}} </span> 次</div>
 							
 						<div style='float:right;font-size:1.3em' @click="addItem" v-bind:class="{disabled:!addIndex}">
 							<span class="glyphicon glyphicon-credit-card"></span>

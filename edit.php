@@ -60,6 +60,12 @@
 				</div>
 				
 				<div class="form-group">
+					<label for="ownerId">所属人</label>
+					<select class="form-control" id="ownerId" name="ownerId" v-model="ownerId">
+						<option v-for="rs,index in ownerList" :value='rs.guid'>{{rs.username}}</option>
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="accountDate">出账日</label>
 					<select class="form-control" id="accountDate" name="accountDate" v-model="accountDate">
 						<option v-for="rs,index in date" :value='index+1'>{{index+1}}</option>
@@ -88,6 +94,8 @@
 					data: {
 						bankList:[],
 						bank:'gd',
+						ownerId:'',
+						ownerList:[],
 						cardNum:null,
 						accountDate:null,
 						repaymentDate:null,
@@ -117,14 +125,26 @@
 								//	console.log(res.data)		
 									vm.bank = res.data.bank;
 									vm.cardNum = res.data.cardNum;
+									vm.ownerId = res.data.ownerId;
 									vm.accountDate = res.data.accountDate;
 									vm.repaymentDate = res.data.repaymentDate;
 									vm.minConsumptionTime = res.data.minConsumptionTime;
 								}]
 							})
 						},
+						getOwnerList(){
+							axios({
+								url:'api/getOwnerList.php',
+								method: 'get',
+								responseType: 'json',
+								transformResponse: [function(res){
+									console.log(res.data)		
+									vm.ownerList = res.data;
+								}]
+							})
+						},
 						editCard(){
-							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime,creditCardId:this.creditCardId};
+							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime,creditCardId:this.creditCardId,ownerId:this.ownerId};
 							
 							let param = this.FormatData(data); 
 							
@@ -162,7 +182,10 @@
 										required : true,
 										number : true,
 										digits : true
-									}
+									},
+									ownerId : {
+										required : true,
+									},
 								},
 								submitHandler: function(form){
 									vm.editCard();
@@ -174,6 +197,7 @@
 					mounted: function(){
 						this.loadBankList();
 						this.getCardContent();
+						this.getOwnerList();
 						this.formCheck();//绑定表单验证
 						
 					}

@@ -59,6 +59,12 @@
 				</div>
 				
 				<div class="form-group">
+					<label for="ownerId">所属人</label>
+					<select class="form-control" id="ownerId" name="ownerId" v-model="ownerId">
+						<option v-for="rs,index in ownerList" :value='rs.guid'>{{rs.username}}</option>
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="accountDate">出账日</label>
 					<select class="form-control" id="accountDate" name="accountDate" v-model="accountDate">
 						<option v-for="rs,index in date" :value='index+1'>{{index+1}}</option>
@@ -87,6 +93,8 @@
 					data: {
 						bankList:[],
 						bank:'gd',
+						ownerId:null,
+						ownerList:[],
 						cardNum:null,
 						accountDate:1,
 						repaymentDate:1,
@@ -107,7 +115,7 @@
 							});
 						},
 						addCard(){
-							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime};
+							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime,ownerId:this.ownerId};
 							
 							let param = this.FormatData(data); 
 							
@@ -123,6 +131,17 @@
 								}]
 							});
 							
+						},
+						getOwnerList(){
+							axios({
+								url:'api/getOwnerList.php',
+								method: 'get',
+								responseType: 'json',
+								transformResponse: [function(res){
+									console.log(res.data)		
+									vm.ownerList = res.data;
+								}]
+							})
 						},
 						FormatData(data){
 							let paramters = new FormData(); 
@@ -145,7 +164,10 @@
 										required : true,
 										number : true,
 										digits : true
-									}
+									},
+									ownerId : {
+										required : true,
+									},
 								},
 								submitHandler: function(form){
 									if(!this.dataSaveing){
@@ -159,6 +181,7 @@
 					},
 					mounted: function(){
 						this.loadBankList();
+						this.getOwnerList();
 						this.formCheck();//绑定表单验证
 						
 					}
