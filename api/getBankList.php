@@ -3,7 +3,7 @@
 	header('Content-type: text/json');
 	include("../../conf/conn.php");
 	$user=$_SESSION['user'];
-	$table = 'bankList';
+	$table = 'creditBankList';
 	$qry = mysql_query("select bankId,bankName from $table where delstatus='1'");
 	
 	while($rs = mysql_fetch_assoc($qry)){

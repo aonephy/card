@@ -74,8 +74,15 @@
 								<div>出账日：每月{{rs.accountDate}}日</div>
 								-->
 								<div>还款日：每月<span style="color:red"> {{rs.repaymentDate}}</span> 日</div>
+								<div v-if="rs.username" style="clear:both">持卡人 ： <span style='    padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{rs.username}}</span></div>
+									<hr>
+								<!--	{{isPay(rs.repaymentTimestamp,rs.repaymentDate)}}-->
 							</a>	
 						</div>
+						
+						<a class="media-right" :href="'javascript:vm.alreadyPay(\''+rs.creditCardId+'\')'" v-if="!isPay(rs.repaymentTimestamp,rs.repaymentDate)">
+							<img class="media-object" style='width:50px;border-radius:5px' src="images/alreadyPay.png" alt="媒体对象">
+						</a>
 					</div>
 				</div>
 			</div>
@@ -98,6 +105,35 @@
 									vm.cardList = res.data;
 								}]
 							})
+						},
+						isPay(repaymentTimestamp,repaymentDate){
+							console.log(repaymentTimestamp);
+							if(repaymentTimestamp==null){
+								return false;
+							}else{
+								let pay_month = new Date(repaymentTimestamp).getMonth()+1;
+								let month = new Date().getMonth()+1;
+								
+								if(pay_month<month){
+									return false;
+								}else{
+									return true;
+								}
+							}
+						},
+						alreadyPay(id){
+							if(confirm('确认已经还款？')){
+								console.log(id);
+								axios({
+									url:'api/alreadyPay.php',
+									method: 'get',
+									params:{creditCardId:id},
+									responseType: 'json',
+									transformResponse: [function(res){
+										vm.getCardList();
+									}]
+								})
+							}
 						}
 					},
 					mounted: function(){

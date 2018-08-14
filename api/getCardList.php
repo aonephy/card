@@ -10,23 +10,30 @@
 	$groupId = mysql_fetch_array(mysql_query("select accountGroup.groupnum from accountGroup inner join user where accountGroup.guid = user.guid and (user.userid='$user' or accountGroup.unionId='$unionId')"))[0];
 	
 	$day = date("d");
-	$dayOffset = 6;
+	$dayOffset = 6;//未来6天需要还款的卡
 	
-	$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.repaymentDate");
+	$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.repaymentDate");
 	
 	if(@$_GET['method']=='lately'){
-		$qry = mysql_query("select $table.bank,$table.iconUrl,bankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId from $table inner join bankList where $table.bank=bankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) and $table.repaymentDate>=$day order by $table.repaymentDate");
+		$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) order by $table.repaymentDate");
 	}
-	
+	$qry = mysql_query($sql);
+	$i=0;
 	while($rs = mysql_fetch_assoc($qry)){
-		$data[] = $rs; 
+		$data[$i] = $rs; 
+		//查询每个卡追认的名字
+		if(!empty($rs['ownerId'])){
+			$tmp = mysql_fetch_assoc(mysql_query("select username from user where guid='$rs[ownerId]'"));
+			$data[$i] = array_merge($data[$i],$tmp);
+		}
+		$i++;
 	}
 	
 	if(empty($data)){
 		$out = array(
 			'code'=>'10001',
 			'msg'=>'groupId error!',
-			'sql'=>"select accountGroup.groupnum from accountGroup inner join user where accountGroup.guid = user.guid and (user.userid='$user' or user.unionId='$unionId')"			
+			'sql'=>$sql			
 		);
 	}else{
 		$out = array(

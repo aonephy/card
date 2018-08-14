@@ -4,7 +4,7 @@
 	include("../../conf/conn.php");
 	$user=$_SESSION['user'];
 	$table = 'creditCardMgmt';
-	$sql = "select $table.*,bankList.bankName from $table inner join bankList where $table.creditCardId='$_GET[id]' and $table.delstatus='1' and $table.bank=bankList.bankId";
+	$sql = "select $table.*,creditBankList.bankName from $table inner join creditBankList where $table.creditCardId='$_GET[id]' and $table.delstatus='1' and $table.bank=creditBankList.bankId";
 	$qry = mysql_query($sql);
 	
 	$rs = mysql_fetch_assoc($qry);
