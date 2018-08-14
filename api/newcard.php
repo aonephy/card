@@ -24,6 +24,7 @@
 			'msg'=>"add new card success!"
 		);
 	}
+	
     
    echo json_encode($out,JSON_UNESCAPED_UNICODE);
 ?>
