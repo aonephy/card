@@ -19,9 +19,9 @@
 			.navbar-right{float:right}
 			
 			.navbar{border-bottom:1px solid #eee;min-height:unset;margin-bottom:unset}
-			.navbar-brand{padding:10px 15px;cursor:pointer}
+			.navbar-brand{padding:10px 15px;cursor:pointer;height:auto;}
 			.navbar h4{position:absolute;width:100%;text-align:center;font-weight:700;z-index:-1}
-			.navbar-brand{height:auto;}
+			
 			.glyphicon{color:#24b6fe}
 			hr{margin:10px auto}
 			.panel .media-object{width:45px;border-radius:50px}
