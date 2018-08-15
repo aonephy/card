@@ -23,7 +23,7 @@
 			.navbar h4{position:absolute;width:100%;text-align:center;font-weight:700;z-index:-1}}
 			
 			.glyphicon{color:#24b6fe}
-			.media-body div{font-size:14px}
+			.media-body div{font-size:14px;line-height: 1.5;}
 			.panel .media-object{width:64px;border-radius:50px}
 			@media (min-width: 768px){
 				.navbar-header{width:100%}
@@ -74,8 +74,12 @@
 								<div>出账日：每月{{rs.accountDate}}日</div>
 								-->
 								<div>还款日：每月<span style="color:red"> {{rs.repaymentDate}}</span> 日</div>
-								<div v-if="rs.username" style="clear:both">持卡人 ： <span style='    padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{rs.username}}</span></div>
-									<hr>
+								<div>已消费 
+									<span style="color:blue" v-if="rs.creditCardConsumptionNum"> {{rs.creditCardConsumptionNum}} / {{rs.minConsumptionTime}}</span>
+									<span style="color:blue" v-else> 0 / {{rs.minConsumptionTime}} </span>
+								次</div>
+								<div v-if="rs.username" style="clear:both">持卡人 ： <span style='padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{rs.username}}</span></div>
+									
 								<!--	{{isPay(rs.repaymentTimestamp,rs.repaymentDate)}}-->
 							</a>	
 						</div>
