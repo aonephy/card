@@ -37,7 +37,9 @@
 			<nav class="navbar" role="navigation">
 				<div class="container-fluid"> 
 					<div class="navbar-header">
-						<h4>待还款信用卡（6天内）</h4>
+						
+						<h4 v-if="cardList.length!=0">6天内待还款卡 (<span style='color:red'> {{cardList.length}} </span>张卡)</h4>
+						<h4 v-else>6天内待还款卡</h4>
 						<div class="navbar-right">
 							<a href="mgmt.php" class="navbar-brand">
 							  <span class="glyphicon glyphicon-th-list"></span>
@@ -71,25 +73,6 @@
 					</div>
 					
 				</div>
-				<!--
-				<div class="panel-body">
-				
-					<div class="media">
-						<a class="media-left" :href="'list.php?id='+rs.creditCardId">
-							<img class="media-object" :src="rs.iconUrl"
-								 alt="媒体对象">
-						</a>
-						<div class="media-body">
-							<a :href="'list.php?id='+rs.creditCardId">
-								<h4 class="media-heading">{{rs.bankName}}</h4>
-								**** **** **** {{rs.cardNum}}
-								<div>还款日：每月{{rs.repaymentDate}}日</div>
-							</a>	
-						</div>
-					</div>
-					
-				</div>
-				-->
 			</div>
 		</div>
 		

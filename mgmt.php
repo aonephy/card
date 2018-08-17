@@ -44,7 +44,8 @@
 								<span class="glyphicon glyphicon-chevron-left"></span>
 							</a>
 						</div>
-						<h4>信用卡列表</h4>
+						<h4 v-if="cardList.length!=0">信用卡列表 (<span style='color:red'> {{cardList.length}} </span>张卡)</h4>
+						<h4 v-else>信用卡列表</h4>
 						<div class="navbar-right">
 							<a href="add.php" class="navbar-brand">
 							  <span class="glyphicon glyphicon-plus"></span>

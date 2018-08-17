@@ -10,16 +10,17 @@
 	$table = 'creditCardMgmt';
 	
 	$year = date('Y');
+	$month = date("m");
+	$day = date("d");
 	
 	$groupId = mysql_fetch_array(mysql_query("select groupnum from user where userid='$user' or unionId='$unionId'"))[0];
 
-	$day = date("d");
 	$dayOffset = 6;//未来6天需要还款的卡
 	
 	$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.ownerId desc,$table.repaymentDate");
 	
 	if(@$_GET['method']=='lately'){
-		$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) order by $table.ownerId desc,$table.repaymentDate");
+		$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) and (month(repaymentTimestamp)!=$month or month(repaymentTimestamp)is NULL) order by $table.ownerId desc,$table.repaymentDate");
 	}
 	$qry = mysql_query($sql);
 	$i=0;
