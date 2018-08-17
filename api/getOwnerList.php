@@ -6,10 +6,11 @@
 @	$unionId = $_GET['unionId'];
 	if(empty($unionId)) $unionId = '';
 	
-	$table = 'accountGroup';
-	$groupId = mysql_fetch_array(mysql_query("select accountGroup.groupnum from accountGroup inner join user where accountGroup.guid = user.guid and (user.userid='$user' or accountGroup.unionId='$unionId')"))[0];
+	$table = 'user';
+	$groupId = mysql_fetch_array(mysql_query("select groupnum from user where userid='$user' or unionId='$unionId'"))[0];
 	
-	$sql = "select $table.guid,user.username from $table inner join user where $table.guid=user.guid and $table.groupnum='$groupId'";
+	$sql = "select guid,username from $table where groupnum='$groupId'";
+	
 	$qry = mysql_query($sql);
 		
 	while($rs = mysql_fetch_assoc($qry)){

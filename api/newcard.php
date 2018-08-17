@@ -6,7 +6,7 @@
 	$table = "creditCardMgmt";
 	
 @	$unionId = $_GET['unionId'];
-	$groupId = mysql_fetch_array(mysql_query("select accountGroup.groupnum from accountGroup inner join user where accountGroup.guid = user.guid and (user.userid='$user' or accountGroup.unionId='$unionId')"))[0];
+	$groupId = mysql_fetch_array(mysql_query("select groupnum from user where userid='$user' or unionId='$unionId'"))[0];
 	
 	$ip = $_SERVER['REMOTE_ADDR'];
 	
@@ -23,8 +23,7 @@
 			'code'=>'10000',
 			'msg'=>"add new card success!"
 		);
-	}
-	
+	}	
     
    echo json_encode($out,JSON_UNESCAPED_UNICODE);
 ?>

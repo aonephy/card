@@ -1,7 +1,8 @@
 <?php
 	header("content-Type: text/html; charset=utf-8");
-//	header('Content-type: text/json');
+	header('Content-type: text/json');
 	include("../../conf/conn.php");
+	
 	$user=$_SESSION['user'];
 @	$unionId = $_GET['unionId'];
 	if(empty($unionId)) $unionId = '';
@@ -10,8 +11,8 @@
 	
 	$year = date('Y');
 	
-	$groupId = mysql_fetch_array(mysql_query("select accountGroup.groupnum from accountGroup inner join user where accountGroup.guid = user.guid and (user.userid='$user' or accountGroup.unionId='$unionId')"))[0];
-	
+	$groupId = mysql_fetch_array(mysql_query("select groupnum from user where userid='$user' or unionId='$unionId'"))[0];
+
 	$day = date("d");
 	$dayOffset = 6;//未来6天需要还款的卡
 	
@@ -27,6 +28,7 @@
 		//查询每个卡追认的名字
 		if(!empty($rs['ownerId'])){
 			$tmp = mysql_fetch_assoc(mysql_query("select username from user where guid='$rs[ownerId]'"));
+			
 			$data[$i] = array_merge($data[$i],$tmp);
 			
 			$num = mysql_num_rows(mysql_query("select id from creditCardConsumption where creditCardId='$rs[creditCardId]' and year(date) in ('$year') and delstatus='1'"));
