@@ -15,10 +15,10 @@
 	$day = date("d");
 	$dayOffset = 6;//未来6天需要还款的卡
 	
-	$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.repaymentDate");
+	$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' order by $table.ownerId desc,$table.repaymentDate");
 	
 	if(@$_GET['method']=='lately'){
-		$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) order by $table.repaymentDate");
+		$sql = ("select $table.bank,$table.iconUrl,creditBankList.bankName,$table.cardNum,$table.creditCardId,$table.accountDate,$table.repaymentDate,$table.ownerId,$table.repaymentTimestamp,$table.minConsumptionTime from $table inner join creditBankList where $table.bank=creditBankList.bankId and $table.groupId='$groupId' and $table.delstatus='1' and $table.repaymentDate<($day+$dayOffset) order by $table.ownerId desc,$table.repaymentDate");
 	}
 	$qry = mysql_query($sql);
 	$i=0;

@@ -60,6 +60,10 @@
 				</div>
 				
 				<div class="form-group">
+					<label for="creditLimit">额度</label>
+					<input type="text" class="form-control" id="creditLimit" name="creditLimit" v-model="creditLimit">						
+				</div>
+				<div class="form-group">
 					<label for="ownerId">所属人</label>
 					<select class="form-control" id="ownerId" name="ownerId" v-model="ownerId">
 						<option v-for="rs,index in ownerList" :value='rs.guid'>{{rs.username}}</option>
@@ -97,6 +101,7 @@
 						ownerId:'',
 						ownerList:[],
 						cardNum:null,
+						creditLimit:null,
 						accountDate:null,
 						repaymentDate:null,
 						minConsumptionTime:null,
@@ -125,6 +130,7 @@
 								//	console.log(res.data)		
 									vm.bank = res.data.bank;
 									vm.cardNum = res.data.cardNum;
+									vm.creditLimit = res.data.creditLimit;
 									vm.ownerId = res.data.ownerId;
 									vm.accountDate = res.data.accountDate;
 									vm.repaymentDate = res.data.repaymentDate;
@@ -144,7 +150,7 @@
 							})
 						},
 						editCard(){
-							let data = {bank:this.bank,cardNum:this.cardNum,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime,creditCardId:this.creditCardId,ownerId:this.ownerId};
+							let data = {bank:this.bank,cardNum:this.cardNum,creditLimit:this.creditLimit,accountDate:this.accountDate,repaymentDate:this.repaymentDate,minConsumptionTime:this.minConsumptionTime,creditCardId:this.creditCardId,ownerId:this.ownerId};
 							
 							let param = this.FormatData(data); 
 							

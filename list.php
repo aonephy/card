@@ -79,7 +79,8 @@
 						<div style='float:left;margin-bottom:20px'>出账日 ：每月<span style="color:red"> {{cardContent.accountDate}} </span>日</div>
 						
 						<div style='float:right'>还款日 ：每月<span style="color:red"> {{cardContent.repaymentDate}} </span>日</div>
-						<div style="clear:both">持卡人 ： <span style='    padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{cardContent.username}}</span></div>
+						<div style="clear:left;float:left;margin-bottom:20px">持卡人 ： <span style='padding: 3px 20px;background: #a7a7a7;color: #fff;'>{{cardContent.username}}</span></div>
+						<div style='float:right'>额度 ：<span style="color:red"> {{cardContent.creditLimit}} </span></div>
 						<hr style="clear:both">
 						<div style='float:left'>免年费消费次数 ：<span style="color:blue"> {{cardContent.minConsumptionTime}} </span> 次</div>
 							

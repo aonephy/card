@@ -17,7 +17,7 @@
 		mysql_query("update $table set repaymentTimestamp=now() where groupId='$groupId' and creditCardId='$_GET[creditCardId]'") or die(mysql_error());
 		$out = array(
 			'code'=>'10000',
-			'msg'=>"set already pay success!"
+			'msg'=>"add new card success!"
 		);
 	}
     
