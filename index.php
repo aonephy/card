@@ -21,7 +21,8 @@
 			.navbar h4{position:absolute;width:100%;text-align:center;font-weight:700}
 			.navbar-brand{height:auto}
 			.glyphicon{color:#24b6fe}
-			
+			.media{position:relative;}
+			.media-right-sm-box{position:absolute;top:0px;right:0px}
 			.panel .media-object{width:64px;border-radius:50px}
 			@media (min-width: 768px){
 				.navbar-header{width:100%}
@@ -67,7 +68,7 @@
 								
 							</a>	
 						</div>
-						<a class="media-right" :href="'javascript:vm.alreadyPay(\''+rs.creditCardId+'\')'" v-if="!isPay(rs.repaymentTimestamp,rs.repaymentDate)">
+						<a class="media-right-sm-box" :href="'javascript:vm.alreadyPay(\''+rs.creditCardId+'\')'" v-if="!isPay(rs.repaymentTimestamp,rs.repaymentDate)">
 							<img class="media-object" style='width:50px;border-radius:5px' src="images/alreadyPay.png" alt="媒体对象">
 						</a>
 					</div>
