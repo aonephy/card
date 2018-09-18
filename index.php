@@ -27,6 +27,7 @@
 			@media (min-width: 768px){
 				.navbar-header{width:100%}
 			}
+			a:hover{text-decoration: none;}
 		</style>
 		<script src="/jquery/jquery-1.11.3.min.js"></script>
 		<script src="/js/vue.min.js"></script>

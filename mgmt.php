@@ -30,6 +30,7 @@
 			@media (min-width: 768px){
 				.navbar-header{width:100%}
 			}
+			a:hover{text-decoration: none;}
 		</style>
 		<script src="/js/vue.min.js"></script>
 		<script src="/js/axios.min.js"></script>
